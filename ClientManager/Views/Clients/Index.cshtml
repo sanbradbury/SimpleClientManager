@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Client>
+
+@{
+    ViewData["Title"] = "Index";
+    var successMessage = TempData["successMessage"]?.ToString();
+    var errorMessage = TempData["errorMessage"]?.ToString();
+}
+
+
+
+@if (!string.IsNullOrWhiteSpace(successMessage))
+{
+    <div class="alert alert-success">
+        <strong>Success!</strong> successMessage
+    </div>
+    <button type="button" class="btn-close float-end" data-bs-dismiss="alert"></button>
+}
+else if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger">
+        <strong>Error</strong> errorMessage
+    </div>
+    <button type="button" class="btn-close float-end" data-bs-dismiss="alert"></button>
+}
+
+<p>
+    <a asp-action="Create" asp-controller="Clients" class="btn btn-primary">Add New Client</a>
+</p>
+<table class="table table-responsive table-hover table-bordered" id="data-table">
+    <thead>
+        <tr class="table-active">
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.ClientName)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.ClientSurname)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.ContactNumber)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.CallCenterName)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Idnumber)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.AccountBalance)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.CaptureDate)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.CapturedBy)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.PaymentsToDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClientName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClientSurname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CallCenterName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Idnumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountBalance)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CaptureDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CapturedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaymentsToDate)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ClientId" class="btn btn-primary mb-3">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.ClientId" class="btn btn-success mb-3">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.ClientId" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            //Message to display when no data in table
+            <tr>
+                <td colspan="6">
+                    <div>No Clients available at this moment</div>
+                </td>
+            </tr>   
+        }
+        
+    </tbody>
+</table>
+<form method="post" action="@Url.Action("ExportToExcel", "Clients")">
+    <input type="email" name="emailAddress" placeholder="Enter your email address" required />
+    <button type="submit" class="btn btn-primary">Send Excel to Email</button>
+</form>

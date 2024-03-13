@@ -1,0 +1,56 @@
+﻿@model IEnumerable<ClientManager.Models.Payment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add Payment</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfPayment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmountOfPayment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReferenceForPayment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Client)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfPayment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmountOfPayment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReferenceForPayment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client.ClientId)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.PaymentId" class="btn btn-success">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.PaymentId" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<form method="post" action="@Url.Action("ExportToExcel", "Payments")">
+    <input type="email" name="emailAddress" placeholder="Enter your email address" required />
+    <button type="submit" class="btn btn-primary">Send Excel to Email</button>
+</form>
